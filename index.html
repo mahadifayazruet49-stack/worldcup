@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CupPredictor 2026 🏆 - World Cup Schedule & AI Predictions</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Smooth thematic transitions */
+        body, div, input, button {
+            transition: all 0.25s ease-in-out;
+        }
+        /* Custom scrollbar handling for a clean sports UI */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #064e3b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f59e0b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-gray-100 font-sans min-h-screen relative selection:bg-amber-500 selection:text-zinc-950">
+
+    <div id="authOverlay" class="fixed inset-0 z-50 bg-zinc-950/80 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-emerald-900 to-zinc-900 border border-emerald-500/30 rounded-2xl p-6 w-full max-w-md shadow-2xl shadow-emerald-950/50">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-500 text-zinc-900 text-3xl mb-3 shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-trophy animate-bounce"></i>
+                </div>
+                <h2 class="text-2xl font-black tracking-wide text-amber-400">CupPredictor 2026</h2>
+                <p class="text-xs text-emerald-300/80 mt-1">Unlock live schedules, global fan chats, and advanced AI analytics.</p>
+            </div>
+
+            <div class="flex border-b border-emerald-800/60 mb-5">
+                <button id="tabLogin" class="flex-1 pb-2 font-bold text-sm text-amber-400 border-b-2 border-amber-400 cursor-pointer">Login</button>
+                <button id="tabRegister" class="flex-1 pb-2 font-bold text-sm text-gray-400 border-b-2 border-transparent hover:text-gray-200 cursor-pointer">Create Account</button>
+            </div>
+
+            <form id="authForm" class="space-y-4">
+                <div id="regFields" class="hidden space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">Email Address</label>
+                        <input type="email" id="authEmail" class="w-full bg-zinc-900/80 border border-emerald-800 focus:border-amber-400 rounded-lg px-3 py-2 text-sm focus:outline-none" placeholder="name@domain.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">Favorite Team</label>
+                        <select id="authTeam" class="w-full bg-zinc-900/80 border border-emerald-800 focus:border-amber-400 rounded-lg px-3 py-2 text-sm focus:outline-none text-gray-300">
+                            <option value="Argentina">Argentina 🇦🇷</option>
+                            <option value="Brazil">Brazil 🇧🇷</option>
+                            <option value="France">France 🇫🇷</option>
+                            <option value="Germany">Germany 🇩🇪</option>
+                            <option value="England">England 🏴󠁧󠁢󠁥󠁮󠁧󠁿</option>
+                            <option value="Spain">Spain 🇪🇸</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">Username</label>
+                    <input type="text" id="authUsername" required class="w-full bg-zinc-900/80 border border-emerald-800 focus:border-amber-400 rounded-lg px-3 py-2 text-sm focus:outline-none" placeholder="Striker99">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1">Password</label>
+                    <input type="password" required class="w-full bg-zinc-900/80 border border-emerald-800 focus:border-amber-400 rounded-lg px-3 py-2 text-sm focus:outline-none" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-2.5 rounded-lg shadow-lg shadow-amber-500/20 cursor-pointer mt-2 text-sm uppercase tracking-wide">
+                    Enter Stadium
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <nav class="sticky top-0 z-40 bg-zinc-900/90 backdrop-blur border-b border-emerald-950 px-4 py-3 flex items-center justify-between shadow-md">
+        <div class="flex items-center gap-3">
+            <span class="text-xl md:text-2xl font-black text-amber-400 tracking-wider flex items-center gap-2 select-none">
+                <i class="fa-solid fa-square-poll-horizontal text-emerald-400"></i> CupPredictor <span class="text-white bg-emerald-600 px-1.5 py-0.5 rounded text-xs tracking-normal font-medium">2026</span>
+            </span>
+        </div>
+        
+        <div class="hidden md:flex items-center gap-6 text-sm font-semibold tracking-wide">
+            <a href="#scheduleSection" class="text-amber-400 border-b-2 border-amber-400 pb-1 flex items-center gap-1.5"><i class="fa-solid fa-calendar-days"></i> Match Schedule</a>
+            <a href="#aiSection" class="text-gray-400 hover:text-white pb-1 flex items-center gap-1.5 transition-colors"><i class="fa-solid fa-brain"></i> AI Oracle</a>
+            <a href="#chatSection" class="text-gray-400 hover:text-white pb-1 flex items-center gap-1.5 transition-colors"><i class="fa-solid fa-comments"></i> Fan Arena</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 border-r border-zinc-800 pr-3">
+                <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80" alt="Avatar" class="w-8 h-8 rounded-full border border-amber-400 object-cover">
+                <span id="navUserDisplay" class="text-xs md:text-sm font-bold text-gray-200">Guest</span>
+            </div>
+            <button id="logoutBtn" class="text-xs bg-zinc-800 hover:bg-red-950 hover:text-red-400 border border-zinc-700 hover:border-red-900 px-2.5 py-1.5 rounded-md font-semibold cursor-pointer transition-colors">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+        </div>
+    </nav>
+
+
+    <div class="max-w-[1500px] mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 md:p-6">
+        
+        <main class="lg:col-span-2 space-y-6">
+            
+            <section id="scheduleSection" class="bg-zinc-900 border border-emerald-950/60 rounded-xl p-4 shadow-xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                    <h3 class="text-lg font-black tracking-wide flex items-center gap-2 text-emerald-400">
+                        <i class="fa-solid fa-circle-nodes"></i> TOURNAMENT MATCH CENTER
+                    </h3>
+                    <div class="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800 text-xs font-bold">
+                        <button class="stage-tab bg-emerald-600 text-white px-3 py-1.5 rounded-md cursor-pointer" data-stage="group">Group Stage</button>
+                        <button class="stage-tab text-gray-400 hover:text-gray-200 px-3 py-1.5 rounded-md cursor-pointer" data-stage="knockout">Knockouts</button>
+                        <button class="stage-tab text-gray-400 hover:text-gray-200 px-3 py-1.5 rounded-md cursor-pointer" data-stage="finals">Finals</button>
+                    </div>
+                </div>
+
+                <div id="matchFeed" class="space-y-3 max-h-[480px] overflow-y-auto custom-scrollbar pr-1">
+                    </div>
+            </section>
+
+            <section id="aiSection" class="bg-gradient-to-br from-emerald-950/30 to-zinc-900 border border-amber-500/20 rounded-xl p-5 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-5 text-8xl text-amber-400 pointer-events-none">
+                    <i class="fa-solid fa-microchip-ai"></i>
+                </div>
+                
+                <h3 class="text-lg font-black tracking-wide text-amber-400 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> AI ORACLE PREDICTOR
+                </h3>
+                <p class="text-xs text-gray-400 mb-4">Select any two football heavyweights to generate neural match metrics.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-7 items-center gap-3 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80">
+                    <div class="sm:col-span-3">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-1">Side A</label>
+                        <select id="aiTeamA" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-semibold text-white focus:outline-none focus:border-amber-400">
+                            <option value="Argentina">Argentina 🇦🇷</option>
+                            <option value="Brazil">Brazil 🇧🇷</option>
+                            <option value="France">France 🇫🇷</option>
+                            <option value="Germany">Germany 🇩🇪</option>
+                            <option value="England">England 🏴󠁧󠁢󠁥󠁮󠁧󠁿</option>
+                            <option value="Spain">Spain 🇪🇸</option>
+                        </select>
+                    </div>
+
+                    <div class="sm:col-span-1 text-center text-xs font-black text-amber-500">VS</div>
+
+                    <div class="sm:col-span-3">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-1">Side B</label>
+                        <select id="aiTeamB" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm font-semibold text-white focus:outline-none focus:border-amber-400">
+                            <option value="Brazil" selected>Brazil 🇧🇷</option>
+                            <option value="Argentina">Argentina 🇦🇷</option>
+                            <option value="France">France 🇫🇷</option>
+                            <option value="Germany">Germany 🇩🇪</option>
+                            <option value="England">England 🏴󠁧󠁢󠁥󠁮󠁧󠁿</option>
+                            <option value="Spain">Spain 🇪🇸</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex justify-end">
+                    <button id="askAiBtn" class="bg-amber-500 hover:bg-amber-400 text-zinc-950 text-sm font-bold px-5 py-2 rounded-lg shadow-md cursor-pointer flex items-center gap-2">
+                        <i class="fa-solid fa-brain"></i> Ask Prediction AI
+                    </button>
+                </div>
+
+                <div id="aiOutputPlaceholder" class="hidden mt-4 p-4 rounded-xl border border-dashed border-emerald-800/60 bg-zinc-950/30 text-center text-sm text-gray-400">
+                    <div class="inline-block animate-spin rounded-full h-5 w-5 border-2 border-amber-400 border-t-transparent mr-2 align-middle"></div>
+                    Simulating tactical iterations...
+                </div>
+                
+                <div id="aiOutputCard" class="hidden mt-4 bg-zinc-950/80 border border-emerald-500/30 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between border-b border-zinc-800 pb-2">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider"><i class="fa-solid fa-square-poll-vertical"></i> Tactical Projection</span>
+                        <span id="aiConfidence" class="text-xs font-black bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">Confidence: 74%</span>
+                    </div>
+                    <div id="aiMatchScript" class="text-sm leading-relaxed text-gray-300">
+                        </div>
+                </div>
+            </section>
+        </main>
+
+        <aside id="chatSection" class="lg:col-span-1">
+            <div class="bg-zinc-900 border border-emerald-950/60 rounded-xl shadow-xl flex flex-col h-[500px] lg:h-[730px]">
+                <div class="p-4 border-b border-zinc-800 bg-zinc-950/40 rounded-t-xl flex items-center justify-between">
+                    <div>
+                        <h4 class="text-sm font-black tracking-wide text-white flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> LIVE FAN MATCH PREDICTIONS
+                        </h4>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Real-time global fan banter & voting sentiment</p>
+                    </div>
+                    <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-800 border border-zinc-700 text-gray-300">Arena Chat</span>
+                </div>
+
+                <div id="chatMessageFeed" class="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar text-xs md:text-sm">
+                    <div class="bg-zinc-950/50 border border-zinc-800/40 rounded-xl p-2.5 max-w-[85%]">
+                        <div class="flex items-center justify-between gap-4 mb-1">
+                            <span class="font-bold text-emerald-400">NeymarFanatic</span>
+                            <span class="text-[10px] text-zinc-500">2 mins ago</span>
+                        </div>
+                        <p class="text-gray-300">Brazil is looking completely unstoppable this year! The tactical frontline setup is insane.</p>
+                    </div>
+
+                    <div class="bg-zinc-950/50 border border-zinc-800/40 rounded-xl p-2.5 max-w-[85%]">
+                        <div class="flex items-center justify-between gap-4 mb-1">
+                            <span class="font-bold text-blue-400">MbappeSpeed</span>
+                            <span class="text-[10px] text-zinc-500">1 min ago</span>
+                        </div>
+                        <p class="text-gray-300">Don't count out France. They have way more depth in structural midfield positions.</p>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-zinc-950/60 border-t border-zinc-800 rounded-b-xl">
+                    <form id="chatForm" class="flex items-center gap-2">
+                        <input type="text" id="chatInput" autocomplete="off" required placeholder="Type match prediction banter..." class="flex-1 bg-zinc-900 border border-zinc-800 focus:border-amber-400 rounded-lg px-3 py-2 text-xs focus:outline-none placeholder:text-gray-500">
+                        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-lg transition-colors cursor-pointer shadow">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+
+    <script>
+        // --- CENTRAL MOCK DATA STORES ---
+        const matchesData = {
+            group: [
+                { teamA: 'Argentina', flagA: '🇦🇷', teamB: 'Saudi Arabia', flagB: '🇸🇦', date: 'June 25, 2026', time: '18:00 UTC', stadium: 'Lusail Iconic Stadium', probA: 78, probB: 22 },
+                { teamA: 'Brazil', flagA: '🇧🇷', teamB: 'Serbia', flagB: '🇷🇸', date: 'June 26, 2026', time: '21:00 UTC', stadium: 'Al Janoub Stadium', probA: 65, probB: 35 },
+                { teamA: 'France', flagA: '🇫🇷', teamB: 'Australia', flagB: '🇦🇺', date: 'June 27, 2026', time: '15:00 UTC', stadium: 'Stadium 974', probA: 82, probB: 18 }
+            ],
+            knockout: [
+                { teamA: 'England', flagA: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', teamB: 'Senegal', flagB: '🇸🇳', date: 'July 02, 2026', time: '19:00 UTC', stadium: 'Al Bayt Stadium', probA: 60, probB: 40 },
+                { teamA: 'Spain', flagA: '🇪🇸', teamB: 'Morocco', flagB: '🇲🇦', date: 'July 03, 2026', time: '17:00 UTC', stadium: 'Education City Stadium', probA: 55, probB: 45 }
+            ],
+            finals: [
+                { teamA: 'TBD Team Alpha', flagA: '🏆', teamB: 'TBD Team Beta', flagB: '⚽', date: 'July 19, 2026', time: '18:00 UTC', stadium: 'MetLife Stadium Arena', probA: 50, probB: 50 }
+            ]
+        };
+
+        // --- SESSION STATE MANAGEMENT ---
+        let sessionUser = {
+            isLoggedIn: false,
+            username: '',
+            favoriteTeam: ''
+        };
+
+        // --- DOM ELEMENT SELECTORS ---
+        const authOverlay = document.getElementById('authOverlay');
+        const authForm = document.getElementById('authForm');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+        const regFields = document.getElementById('regFields');
+        const authUsername = document.getElementById('authUsername');
+        const authEmail = document.getElementById('authEmail');
+        const authTeam = document.getElementById('authTeam');
+        const navUserDisplay = document.getElementById('navUserDisplay');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const matchFeed = document.getElementById('matchFeed');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessageFeed = document.getElementById('chatMessageFeed');
+        const askAiBtn = document.getElementById('askAiBtn');
+        const aiTeamA = document.getElementById('aiTeamA');
+        const aiTeamB = document.getElementById('aiTeamB');
+        const aiOutputPlaceholder = document.getElementById('aiOutputPlaceholder');
+        const aiOutputCard = document.getElementById('aiOutputCard');
+        const aiMatchScript = document.getElementById('aiMatchScript');
+        const aiConfidence = document.getElementById('aiConfidence');
+
+        // --- SYSTEM GATEKEEPER INITIALIZATION ---
+        function runAuthCheck() {
+            const cachedUser = localStorage.getItem('cup_user');
+            if (cachedUser) {
+                sessionUser = JSON.parse(cachedUser);
+                initializeDashboard();
+            } else {
+                authOverlay.classList.remove('hidden');
+            }
+        }
+
+        // Authentication Gateway Layout Navigation Tabs
+        let currentAuthMode = 'login';
+        tabLogin.addEventListener('click', () => {
+            currentAuthMode = 'login';
+            regFields.classList.add('hidden');
+            authUsername.required = true;
+            authEmail.required = false;
+            tabLogin.className = "flex-1 pb-2 font-bold text-sm text-amber-400 border-b-2 border-amber-400 cursor-pointer";
+            tabRegister.className = "flex-1 pb-2 font-bold text-sm text-gray-400 border-b-2 border-transparent hover:text-gray-200 cursor-pointer";
+        });
+
+        tabRegister.addEventListener('click', () => {
+            currentAuthMode = 'register';
+            regFields.classList.remove('hidden');
+            authUsername.required = true;
+            authEmail.required = true;
+            tabRegister.className = "flex-1 pb-2 font-bold text-sm text-amber-400 border-b-2 border-amber-400 cursor-pointer";
+            tabLogin.className = "flex-1 pb-2 font-bold text-sm text-gray-400 border-b-2 border-transparent hover:text-gray-200 cursor-pointer";
+        });
+
+        // Intercept gateway submission events to cache profile configurations
+        authForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            sessionUser.isLoggedIn = true;
+            sessionUser.username = authUsername.value.trim();
+            sessionUser.favoriteTeam = currentAuthMode === 'register' ? authTeam.value : 'Argentina';
+
+            localStorage.setItem('cup_user', JSON.stringify(sessionUser));
+            initializeDashboard();
+        });
+
+        // Handle full structural dashboard initialization after successful login
+        function initializeDashboard() {
+            authOverlay.classList.add('hidden');
+            navUserDisplay.textContent = `${sessionUser.username} (${sessionUser.favoriteTeam})`;
+            renderMatchSchedule('group'); // Render standard home list data feed
+        }
+
+        // Global Action Session Tear-downs
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('cup_user');
+            sessionUser.isLoggedIn = false;
+            location.reload();
+        });
+
+
+        // --- SCHEDULE RENDER PIPELINE COMPONENT ---
+        function renderMatchSchedule(stageKey) {
+            matchFeed.innerHTML = '';
+            const targetedMatches = matchesData[stageKey] || [];
+
+            if (targetedMatches.length === 0) {
+                matchFeed.innerHTML = `<div class="text-center text-xs py-8 text-gray-500">No scheduled data fields verified for this bracket phase.</div>`;
+                return;
+            }
+
+            targetedMatches.forEach(m => {
+                const card = document.createElement('div');
+                card.className = "bg-zinc-950 border border-zinc-800/80 rounded-xl p-3 space-y-3 shadow-inner hover:border-emerald-800/60 transition-colors";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between text-[11px] text-gray-400 border-b border-zinc-900 pb-1.5">
+                        <span class="font-medium"><i class="fa-solid fa-map-location-dot text-emerald-500 mr-1"></i> ${m.stadium}</span>
+                        <span class="font-bold text-amber-400">${m.date} &middot; ${m.time}</span>
+                    </div>
+                    <div class="flex items-center justify-between py-1">
+                        <div class="flex items-center gap-2.5 w-5/12">
+                            <span class="text-2xl">${m.flagA}</span>
+                            <span class="text-xs md:text-sm font-bold tracking-wide">${m.teamA}</span>
+                        </div>
+                        <div class="w-2/12 text-center">
+                            <span class="text-[10px] uppercase tracking-widest bg-zinc-900 px-2 py-1 border border-zinc-800 text-amber-500 font-black rounded-md">VS</span>
+                        </div>
+                        <div class="flex items-center justify-end gap-2.5 w-5/12 text-right">
+                            <span class="text-xs md:text-sm font-bold tracking-wide">${m.teamB}</span>
+                            <span class="text-2xl">${m.flagB}</span>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex items-center justify-between text-[10px] text-gray-400 font-semibold px-0.5">
+                            <span>Win Probability: ${m.probA}%</span>
+                            <span>${m.probB}%</span>
+                        </div>
+                        <div class="w-full bg-zinc-900 h-2 rounded-full overflow-hidden flex border border-zinc-800">
+                            <div class="bg-emerald-500 h-full transition-all duration-500" style="width: ${m.probA}%"></div>
+                            <div class="bg-amber-500 h-full transition-all duration-500" style="width: ${m.probB}%"></div>
+                        </div>
+                    </div>
+                `;
+                matchFeed.appendChild(card);
+            });
+        }
+
+        // Schedule stage selection tab switching handler listeners
+        document.querySelectorAll('.stage-tab').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.stage-tab').forEach(b => b.className = "stage-tab text-gray-400 hover:text-gray-200 px-3 py-1.5 rounded-md cursor-pointer");
+                e.target.className = "stage-tab bg-emerald-600 text-white px-3 py-1.5 rounded-md cursor-pointer";
+                renderMatchSchedule(e.target.getAttribute('data-stage'));
+            });
+        });
+
+
+        // --- FAN CHATROOM CONTEXT PIPELINE ---
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const messageTxt = chatInput.value.trim();
+            if (!messageTxt) return;
+
+            const msgCard = document.createElement('div');
+            msgCard.className = "bg-emerald-950/40 border border-emerald-800/40 rounded-xl p-2.5 max-w-[85%] ml-auto shadow-sm animate-fade-in";
+            msgCard.innerHTML = `
+                <div class="flex items-center justify-between gap-4 mb-1">
+                    <span class="font-bold text-amber-400">${sessionUser.username || 'You'} <span class="text-[9px] font-normal uppercase tracking-wide bg-amber-500 text-zinc-950 px-1 rounded ml-1">You</span></span>
+                    <span class="text-[10px] text-zinc-500">Just now</span>
+                </div>
+                <p class="text-gray-200">${messageTxt}</p>
+            `;
+
+            chatMessageFeed.appendChild(msgCard);
+            chatInput.value = '';
+            // Force focus alignment directly into viewport view height dimensions
+            chatMessageFeed.scrollTop = chatMessageFeed.scrollHeight;
+        });
+
+
+        // --- AI PREDICTOR ENGINE CONTROLLER ---
+        askAiBtn.addEventListener('click', () => {
+            const teamA = aiTeamA.value;
+            const teamB = aiTeamB.value;
+
+            if (teamA === teamB) {
+                alert("Please select two different international teams to run tactical algorithms.");
+                return;
+            }
+
+            // Enter active asynchronous data loading mock state
+            aiOutputCard.classList.add('hidden');
+            aiOutputPlaceholder.classList.remove('hidden');
+
+            setTimeout(() => {
+                aiOutputPlaceholder.classList.add('hidden');
+                
+                // Random deterministic execution script for calculations
+                const generatedConfidence = Math.floor(Math.random() * 25) + 60; // range 60-85%
+                const generatedProbA = Math.floor(Math.random() * 30) + 40; // range 40-70%
+                const favorTeam = generatedProbA >= 55 ? teamA : teamB;
+
+                aiConfidence.textContent = `Confidence Matrix: ${generatedConfidence}%`;
+                aiMatchScript.innerHTML = `
+                    Our neural analytics core engine processed recent matches for both teams. 
+                    <strong>${favorTeam}</strong> shows high tactical consistency in central spaces. 
+                    Expected win probability for <strong>${teamA}</strong> sits near <strong>${generatedProbA}%</strong> 
+                    against tactical defensive blocks implemented by <strong>${teamB}</strong>. 
+                    Expect a high-tempo match settling in favor of tactical frontline transitions.
+                `;
+
+                aiOutputCard.classList.remove('hidden');
+            }, 1200); // 1.2s realistic loading delay
+        });
+
+        // Runtime entry execution check triggers
+        runAuthCheck();
+    </script>
+</body>
+</html>
